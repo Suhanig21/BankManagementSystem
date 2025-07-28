@@ -1,0 +1,143 @@
+package com.loan.service;
+
+import com.loan.model.InterestResponse;
+import com.loan.model.LoanApplication;
+import com.loan.repository.LoanApplicationRepository;
+import com.loan.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import com.loan.model.User;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.loan.model.LoanApplication;
+import com.loan.repository.LoanApplicationRepository;
+
+
+@Service
+public class LoanApplicationService {
+
+    @Autowired
+    private LoanApplicationRepository loanRepo;
+
+    @Autowired
+    private UserRepository userRepo;
+
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    public LoanApplication submitApplication(Long userId, LoanApplication app) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        app.setUser(user); // ✅ Set the user to avoid null user_id
+        return loanRepo.save(app);
+    }
+
+    public LoanApplication saveUpdatedApplication(LoanApplication app) {
+        return loanRepo.save(app);
+    }
+
+
+    public List<LoanApplication> getAllApplications() {
+        return loanRepo.findAll();
+    }
+
+    public LoanApplication getApplicationById(Long id) {
+        return loanRepo.findById(id).orElse(null);
+    }
+
+    private boolean isEligible(LoanApplication loan) {
+        User user = loan.getUser(); 
+
+        Double income = user.getIncome();
+        double loanAmount = loan.getLoanAmount();
+
+        return user.getIncome() != null &&
+            user.getIncome() >= 30000 &&
+            loanAmount <= income * 10 &&
+            loan.getCreditScore() >= 700;
+    }
+
+    public LoanApplication processLoanApplication(Long id) {
+    LoanApplication loan = loanRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Loan not found"));
+
+    if (isEligible(loan)) {
+        loan.setStatus("Approved");
+    } else {
+        loan.setStatus("Rejected");
+    }
+
+    return loanRepo.save(loan);
+    }
+
+
+
+    public LoanApplication approveLoan(Long id) {
+        LoanApplication loan = loanRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+        loan.setStatus("Approved");
+        return loanRepo.save(loan);
+    }
+
+    public LoanApplication rejectLoan(Long id) {
+        LoanApplication loan = loanRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+        loan.setStatus("Rejected");
+        return loanRepo.save(loan);
+    }
+
+    public String storeDocument(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file");
+        }
+
+        String uploadDir = "uploads/";
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uniqueFilename = UUID.randomUUID().toString() + extension;
+
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(uniqueFilename);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        return filePath.toString(); // this path can be saved in the database
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

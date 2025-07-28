@@ -1,0 +1,27 @@
+package com.loan.controller;
+
+import com.loan.model.InterestRequest;
+import com.loan.model.InterestResponse;
+import com.loan.service.InterestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000")  // your React frontend port
+public class InterestController {
+
+    @Autowired
+    private InterestService interestService;
+
+    @PostMapping("/calculate-interest")
+    public ResponseEntity<Map<String, Double>> calculateInterest(@RequestBody InterestCalculationRequest request) {
+        double interest = loanApplicationService.calculateInterest(request.getLoanAmount(), request.getRate(), request.getTime());
+
+        Map<String, Double> response = new HashMap<>();
+        response.put("interestAmount", interest);  // ✅ make sure this key matches exactly
+
+        return ResponseEntity.ok(response);
+    }
+
+}

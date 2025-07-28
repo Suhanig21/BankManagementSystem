@@ -1,0 +1,22 @@
+package com.loan.controller;
+
+@RestController
+@RequestMapping("/repayment")
+@CrossOrigin(origins = "http://localhost:3001")
+public class RepaymentScheduleController {
+
+    @Autowired
+    private RepaymentScheduleService repaymentScheduleService;
+
+    @PostMapping("/generate/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> generateSchedule(
+            @PathVariable Long loanId,
+            @RequestBody List<RepaymentSchedule> schedules) {
+        return ResponseEntity.ok(repaymentScheduleService.saveSchedule(loanId, schedules));
+    }
+
+    @GetMapping("/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> getSchedule(@PathVariable Long loanId) {
+        return ResponseEntity.ok(repaymentScheduleService.getScheduleByLoanId(loanId));
+    }
+}

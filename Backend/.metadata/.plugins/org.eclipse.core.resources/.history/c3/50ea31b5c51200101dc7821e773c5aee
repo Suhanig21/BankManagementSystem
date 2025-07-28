@@ -1,0 +1,42 @@
+package com.loan.controller;
+
+
+import com.loan.model.RepaymentSchedule;
+import com.loan.service.RepaymentScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan/schedule")
+@CrossOrigin(origins = "http://localhost:3000")
+public class RepaymentScheduleController {
+
+    @Autowired
+    private RepaymentScheduleService repaymentScheduleService;
+
+    // Create a custom repayment schedule
+    @PostMapping("/generate/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> createSchedule(
+            @PathVariable Long loanId,
+            @RequestBody List<RepaymentSchedule> schedules) {
+        List<RepaymentSchedule> saved = repaymentScheduleService.createSchedule(loanId, schedules);
+        return ResponseEntity.ok(saved);
+    }
+
+    // Fetch repayment schedule by loan ID
+    @GetMapping("/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> getSchedule(@PathVariable Long loanId){
+        List<RepaymentSchedule> list = repaymentScheduleService.fetchScheduleByLoanId(loanId);
+        return ResponseEntity.ok(list);
+    }
+    
+    @PostMapping("/generate-and-save/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> generateAndSaveSchedule(@PathVariable Long loanId) {
+        List<RepaymentSchedule> schedule = repaymentScheduleService.generateAndSaveSchedule(loanId);
+        return ResponseEntity.ok(schedule);
+    }
+
+}

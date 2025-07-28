@@ -1,0 +1,5 @@
+package com.loan.model;
+
+public class InterestRequest {
+
+}

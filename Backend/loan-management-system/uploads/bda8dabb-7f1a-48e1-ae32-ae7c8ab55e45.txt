@@ -1,0 +1,25 @@
+head - first line 
+tail - last 10 lines
+`` - 
+display 3-8
+cat -n newemp | head -8 | tail -6
+wc - no of lines(-l), words, characters - wordcount
+cut - 
+for characters - cut -c1 < file2 (first character of each line)
+cut -c1,2 < file2
+for field - cut -d "|" -f2 < emplist (so if table with delimeters then 2nd column f2)
+if date (only date number) - date | cut -d " " -f3 : for range - date | cut -d " " -f3-5
+man date for all switches
+ls -l | tr -s " " | cut -d " " -f9,5 where tr is translate , -s is squeeze
+grep -E (extended grep) or egrep
+if list of patterns to be grep store pattern in file then grep
+cat srch_pat , grep -Ef srch_pat emplist
+find . -name file3
+
+ps -ef - processes runnung in a server
+bourne(Oracle) .sh, corn(Solaris), sea shell - path
+
+read -p "Enter Name" name - -p is prompt 
+so echo $name will name entered from above command
+
+

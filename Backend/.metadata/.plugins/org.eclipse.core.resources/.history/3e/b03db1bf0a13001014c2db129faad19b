@@ -1,0 +1,47 @@
+package com.loan.controller;
+
+import com.loan.model.RepaymentSchedule;
+import com.loan.service.RepaymentScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan/schedule")
+@CrossOrigin(origins = "http://localhost:3000")
+public class RepaymentScheduleController {
+
+    @Autowired
+    private RepaymentScheduleService repaymentScheduleService;
+
+    // Existing: Custom schedule from request body
+    @PostMapping("/generate/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> createSchedule(
+            @PathVariable Long loanId,
+            @RequestBody List<RepaymentSchedule> schedules) {
+        List<RepaymentSchedule> saved = repaymentScheduleService.createSchedule(loanId, schedules);
+        return ResponseEntity.ok(saved);
+    }
+
+    // Existing: Fetch from DB
+    @GetMapping("/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> getSchedule(@PathVariable Long loanId) {
+        List<RepaymentSchedule> list = repaymentScheduleService.fetchScheduleByLoanId(loanId);
+        return ResponseEntity.ok(list);
+    }
+
+    // NEW: Auto-generate equal installment schedule
+    @PostMapping("/auto-generate")
+    public ResponseEntity<List<RepaymentSchedule>> autoGenerateSchedule(
+            @RequestParam Long loanId,
+            @RequestParam double totalAmount,
+            @RequestParam int tenure,
+            @RequestParam String source // "admin" or "calculator"
+    ) {
+        List<RepaymentSchedule> schedules =
+                repaymentScheduleService.generateAndOptionallySaveSchedule(loanId, totalAmount, tenure, source);
+        return ResponseEntity.ok(schedules);
+    }
+}

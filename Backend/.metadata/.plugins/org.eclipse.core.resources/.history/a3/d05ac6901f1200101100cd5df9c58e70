@@ -1,0 +1,34 @@
+spring.application.name=loan-management-system
+
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=hr
+spring.datasource.password=hr
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+spring.jpa.database-platform=org.hibernate.dialect.Oracle12cDialect
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.idle-timeout=600000
+spring.datasource.hikari.connection-timeout=30000
+
+
+# Server Port
+server.port=8080
+
+
+
+
+
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.Oracle12cDialect
+
+# Allow CORS from frontend (React app on port 3001)
+# Optional: Can configure it globally using a WebMvcConfigurer bean instead
+# This setting just helps as a hint to browser, not Spring Security
+# Use CORS config in WebSecurity or Controller level for actual control
+# spring.web.allow-cors=true
+
+# Logging
+logging.level.org.springframework.security=DEBUG

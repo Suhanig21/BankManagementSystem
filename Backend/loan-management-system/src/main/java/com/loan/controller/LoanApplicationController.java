@@ -1,0 +1,98 @@
+package com.loan.controller;
+
+import com.loan.model.LoanApplication;
+import com.loan.service.LoanApplicationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000")
+public class LoanApplicationController {
+
+    @Autowired
+    private LoanApplicationService loanService;
+
+    @PostMapping("/apply/{userId}")
+    public LoanApplication applyLoan(@PathVariable Long userId, @RequestBody LoanApplication app) {
+        return loanService.submitApplication(userId, app);
+    }
+
+
+    @GetMapping("/all")
+    public List<LoanApplication> getAll() {
+        return loanService.getAllApplications();
+    }
+
+    @GetMapping("/{id}")
+    public LoanApplication getById(@PathVariable Long id) {
+        return loanService.getApplicationById(id);
+    }
+
+    @PutMapping("/process/{id}")
+    public ResponseEntity<LoanApplication> processLoan(@PathVariable Long id) {
+        LoanApplication loan = loanService.processLoanApplication(id);
+        return ResponseEntity.ok(loan);
+    }
+
+
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<LoanApplication> approveLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.approveLoan(id));
+    }
+
+    @PutMapping("/reject/{id}")
+    public ResponseEntity<LoanApplication> rejectLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.rejectLoan(id));
+    }
+
+    @PostMapping("/upload/{id}")
+    public ResponseEntity<String> uploadDocument(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            String path = loanService.storeDocument(file);
+            
+            LoanApplication loan = loanService.getApplicationById(id);
+            if (loan == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            loan.setDocumentPath(path); // ✅ Set path
+            loanService.saveUpdatedApplication(loan); // ✅ Save updated entity
+
+            return ResponseEntity.ok("Document uploaded to: " + path);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Upload failed: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) throws IOException {
+        LoanApplication app = loanService.getApplicationById(id);
+
+        if (app.getDocumentPath() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Path path = Paths.get(app.getDocumentPath());
+        Resource resource = new UrlResource(path.toUri());
+
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + path.getFileName().toString() + "\"")
+                .body(resource);
+    }
+}

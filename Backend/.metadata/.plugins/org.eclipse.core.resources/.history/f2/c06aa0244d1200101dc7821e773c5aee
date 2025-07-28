@@ -1,0 +1,46 @@
+package com.loan.controller;
+
+import com.loan.model.LoanApplication;
+import com.loan.service.LoanApplicationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000")
+public class LoanApplicationController {
+
+    @Autowired
+    private LoanApplicationService loanService;
+
+    @PostMapping("/apply")
+    public LoanApplication applyLoan(@RequestBody LoanApplication app) {
+        return loanService.submitApplication(app);
+    }
+
+    @GetMapping("/all")
+    public List<LoanApplication> getAll() {
+        return loanService.getAllApplications();
+    }
+
+    @GetMapping("/{id}")
+    public LoanApplication getById(@PathVariable Long id) {
+        return loanService.getApplicationById(id);
+    }
+    
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<LoanApplication> approveLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.approveLoan(id));
+    }
+
+    @PutMapping("/reject/{id}")
+    public ResponseEntity<LoanApplication> rejectLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.rejectLoan(id));
+    }
+    
+  
+
+}

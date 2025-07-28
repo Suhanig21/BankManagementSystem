@@ -1,0 +1,59 @@
+package com.loan.service;
+
+
+
+import com.loan.model.LoanApplication;
+import com.loan.model.RepaymentSchedule;
+import com.loan.repository.RepaymentScheduleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RepaymentScheduleService {
+
+    @Autowired
+    private RepaymentScheduleRepository scheduleRepository;
+
+    public List<RepaymentSchedule> createSchedule(Long loanId, List<RepaymentSchedule> schedules) {
+        for (RepaymentSchedule schedule : schedules) {
+            schedule.setLoanId(loanId);
+            schedule.setStatus("PENDING");
+        }
+        return scheduleRepository.saveAll(schedules);
+    }
+
+    public List<RepaymentSchedule> fetchScheduleByLoanId(Long loanId) {
+        return scheduleRepository.findByLoanId(loanId);
+    }
+   
+    public List<RepaymentSchedule> generateAndSaveSchedule(Long loanId) {
+        Optional<LoanApplication> loanOpt = loanRepository.findById(loanId);
+        if (!loanOpt.isPresent()) throw new RuntimeException("Loan not found");
+
+        LoanApplication loan = loanOpt.get();
+        double totalAmount = loan.getLoanAmount(); // Assuming interest already added
+        int installments = 5;
+        double installmentAmount = totalAmount / installments;
+
+        List<RepaymentSchedule> scheduleList = new ArrayList<>();
+        LocalDate dueDate = LocalDate.now().plusMonths(1);
+
+        for (int i = 0; i < installments; i++) {
+            RepaymentSchedule installment = new RepaymentSchedule();
+            installment.setLoan(loan);
+            installment.setInstallmentAmount(installmentAmount);
+            installment.setDueDate(dueDate.plusMonths(i));
+            installment.setStatus("PENDING");
+            scheduleList.add(installment);
+        }
+
+        return repaymentRepository.saveAll(scheduleList); // save to DB
+    }
+
+
+    
+}

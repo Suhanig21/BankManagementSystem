@@ -1,0 +1,80 @@
+JavaScript
+It is a scripting language
+
+programming - c, c++, java, .net
+scripting - javascript
+
+js for dynamic webpage interactive - error for wrong passwordfor 
+html for static web page
+
+settimeout(function(), delay) - for changing images
+const variables
+
+javascript vs vbscript
+javascript - more powerful as compare to vbscript, supported by all browsers, default script, faster
+vbscript : .net
+
+
+--objects in javascript
+1. Array
+2. Math
+3. Date
+4. String
+5. Number
+
+--in built objects in javascript
+document
+window
+console
+history
+location ------> link to any website
+
+--in built methods in javascript
+alert()			--> to display popup message
+prompt()		--> to take user I/p
+confirm()		--> will have 2 button : ok, cancel --> ok will return true, cancel will return false
+
+KnockOut JS
+library, open source, create interactive and responsive web page
+jQuery - used for animation, easy css, easy event handling, validation
+MVVM pattern
+lightweight
+object oriented JavaScript : Silverlight but without the browser plugin
+client side
+dependency tracking
+Declarative bindings : bind html elements of UI
+Observables: bind the html elements of UI
+Wide Browser support
+Computed Observables : These are functions that depend on one or more observables and automatically update when their dependencies change
+Templating: reusable UI components
+
+--difference in jquery and ko?
+jQuery - used for animation, easy css, easy event handling, validation
+
+
+CDN- CONTENT DELIVERY N/W
+
+
+--adv on CDN
+we need not have to download library
+we will always get the latest version pf the library
+
+drawback - always connected to the internet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

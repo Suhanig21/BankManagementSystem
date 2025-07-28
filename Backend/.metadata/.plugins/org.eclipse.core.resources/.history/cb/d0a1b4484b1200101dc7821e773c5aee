@@ -1,0 +1,25 @@
+package com.loan.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "loan_applications")
+public class LoanApplication {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String fullName;
+    private String email;
+    private Double loanAmount;
+    private String purpose;
+    private String status = "PENDING"; // default status
+
+    private String documentPath; // for uploaded file
+}

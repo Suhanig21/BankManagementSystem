@@ -1,0 +1,20 @@
+package com.loan.service;
+
+@Service
+public class RepaymentScheduleService {
+
+    @Autowired
+    private RepaymentScheduleRepository scheduleRepository;
+
+    public List<RepaymentSchedule> saveSchedule(Long loanId, List<RepaymentSchedule> schedules) {
+        for (RepaymentSchedule schedule : schedules) {
+            schedule.setLoanId(loanId);
+            schedule.setStatus("PENDING");
+        }
+        return scheduleRepository.saveAll(schedules);
+    }
+
+    public List<RepaymentSchedule> getScheduleByLoanId(Long loanId) {
+        return scheduleRepository.findByLoanId(loanId);
+    }
+}

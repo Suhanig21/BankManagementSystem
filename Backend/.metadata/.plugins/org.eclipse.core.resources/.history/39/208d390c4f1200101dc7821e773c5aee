@@ -1,0 +1,67 @@
+package com.loan.controller;
+
+import com.loan.model.LoanApplication;
+import com.loan.service.LoanApplicationService;
+
+import jakarta.annotation.Resource;
+import jakarta.persistence.criteria.Path;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.net.MalformedURLException;
+import java.net.http.HttpHeaders;
+import java.nio.file.Paths;
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000")
+public class LoanApplicationController {
+
+    @Autowired
+    private LoanApplicationService loanService;
+
+    @PostMapping("/apply")
+    public LoanApplication applyLoan(@RequestBody LoanApplication app) {
+        return loanService.submitApplication(app);
+    }
+
+    @GetMapping("/all")
+    public List<LoanApplication> getAll() {
+        return loanService.getAllApplications();
+    }
+
+    @GetMapping("/{id}")
+    public LoanApplication getById(@PathVariable Long id) {
+        return loanService.getApplicationById(id);
+    }
+    
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<LoanApplication> approveLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.approveLoan(id));
+    }
+
+    @PutMapping("/reject/{id}")
+    public ResponseEntity<LoanApplication> rejectLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.rejectLoan(id));
+    }
+    
+    @PostMapping("/upload/{id}")
+    public ResponseEntity<String> uploadDocument(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            String path = loanService.storeDocument(id, file);
+            return ResponseEntity.ok("Document uploaded to: " + path);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Upload failed: " + e.getMessage());
+        }
+    }
+
+    
+    
+
+
+
+}

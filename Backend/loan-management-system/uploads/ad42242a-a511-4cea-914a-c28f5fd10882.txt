@@ -1,0 +1,257 @@
+--methods
+1 GET: fetch the order details
+2 POST : to add new order details
+3 PUT: update the order
+4 DELETE: to cancel the order
+
+--components
+1 Controller
+2 Interface
+3 Service
+
+request  -----> Controller(connected to client) -------> Service: override the methods
+							     |
+							interface : 4 methods
+
+
+Rest over soap
+light weight, services are independent, accepts both xml and json, perfect for IoT
+biggest advntg of webservice: as the output is json so it is language independent, can interact and exchange data with different software programs written in different languages
+
+Jakarta - spring,
+xsd - def/Schema used for validation
+
+Web services technology :
+soap(simple object access protocol) - XML for sending messages, support the exchange of xml messages over HTTP, SMTP
+Rest - 
+WSDL(web service description lang)
+uddi(universal descrption discovery and integration): online registery for business services
+
+you can add the description as well
+========================
+M : model : data : table : POJO class in java
+V : view : UI/screen/presentation layer: .html, .jsp.. files
+C : controller : business logic of your program 
+
+database se data repository mein aaega
+controller will handle requests eg. receptionist will guide you which department to go
+Tools - Postman and swagger
+
+postman vs swagger - we need to install, everytime it will be a new request(postman)
+0% installation - swagger
+
+xmlns : name space 
+src/main/resources has application.properties
+src/test/java :testing
+
+add sop
+run the project
+
+==note
+application.properties : config file
+1. jdbc connectivity details --
+2. server.port = 8081		: changing the port number
+
+default port no : 8080
+free apache tomcat
+note : Tomcat 9.0, Tomcat 10.0, Tomee<--------------
+
+Spring
+	1. SpringCongif.xml
+
+SpringBoot :
+	1. pom.xml
+	2. application.properties
+
+dependencies to connect to database:
+1. spring data jpa hibernate
+2. MySQL dependencies
+
+==
+hibernate: automation of the table
+spring : automation of the object
+==
+HATEOAS
+hypermedia as the engine of application state(only remember one url like /index, rest can be linked easily - /index/login)
+
+user -----------------> index page |---> login page
+				   |---> info page
+				   |---> welcome page
+framework vs library
+library - specific functionality
+framework - 70% of code is ready
+
+Spring is an alternative to EJB(enterprise java bean)
+Spring has taken over EJB
+
+--features of EJB
+--features of Spring
+1 open source
+2 freely provide the services, which can be used in the appl
+3 spring appl are light weight
+4 loosely coupled appl
+using the interfaces
+
+--:Spring : re
+--why spring to use
+enhances the developer productivity
+loose coupling
+less dependency --: 
+DI : 2 ways - Constructors and Setters
+no application server -------------> built on jdk
+
+--Architecture of Spring
+			POJO classes
+			 ^
+			 |
+			IOC (Inversion of Control : container) - apache server and jar files
+			 ^
+			 | input
+			XML 				SpringConfiguration.xml
+
+
+IOC will check life cycle of objects/bean
+object -------> bean
+
+--life cycle method of bean
+1 init()
+2 destroy()
+
+
+
+Container
+3 IOC container
+1 Core container --> interface name is "BeanFactory"
+	non web appl
+2 J2EE container --> interface is ApplicationContext
+	web appl, non web appl
+	has all the functionality of core container and also the new features
+	has a big size
+3 web container (present in Spring MVC)--> interface is WebApplicationContext
+
+---function of container
+read XML file -> pass data to POJO classes into associated ref -> make layer loosely coupled
+create the bean required
+maintain the life cycle of the bean
+
+
+--types of loading
+1 lazy loading --> advisable to use
+2 eager loading --> default
+
+--main components
+1 xml file
+2 POJO classes
+3 driver class --> will start the container
+
+
+--spring uses
+JRP : JAVA RUNTIME POLYMORPHISM
+RTP: runtime polymorphism
+	(DI)spring will inject the object required at runtime
+eg: booking uber cab --> source,dest --
+	--> driver : mobile, name, location
+mobile number and name automatically injected during payment for cab
+
+--features
+RAD rapid application development
+increases productivity
+decrease the development time and the cost
+faster to create , configure , and setup the application
+creates the runnable application
+avoid writing of the boiler plate code
+embedded server tomcat is present
+project is ready
+
+Spring vs SpringBoot
+advanced, automation, only add dependencies
+in spring all jar has to be added manually vs springboot only add dependencies
+in springboot we do not have SpringConfig.xml
+
+Spring Boot is a Spring framework - 70% code is ready
+DI is present in SpringBoot also
+
+diff pom.xml and application.properties
+dependencies and server changes, database name, jdbc 
+
+
+@SpringBootApplication : ---------------------> annotation
+src/main/java
+	all the classes need to create
+src/main/test
+	
+====
+note:
+Spring provides you another container
+--bean scope
+1 prototype 	:core bean 	: will create a new instance every time
+2 singleton     : core bean     : default and most commonly used bean scope the Spring container creates only one instance of that bean within the entire application context
+3 request	: web access the data from 1 page to another page eg: shopping site : store the data from the first page
+4 session	: web can access the data from multiple pages in 1 session
+5 global session: web can access the data from multiple sessions
+
+
+
+=================
+Student
+	public void markAttendance(){...}
+	public void applyLeave(){..}
+
+	create one 1 bean of the class
+	call the method
+
+
+
+
+
+Employee
+	private int empId;
+	private String ename;
+	private double salary;
+	private String company;
+Customer
+Account
+LoanAccount
+Borrower
+Transaction
+LoanTransaction
+Branch
+Bank
+
+Bank -> Branch OnetoMany
+Branch -> Customer OnetoMany
+Customer -> Account ManytoMany
+Borrower -> LoanAccount ManytoMany
+Account -> Transaction OnetoMany
+LoanAccount -> LoanTransaction OnetoMany
+
+
+monolithic
+version issue, testing will take time, stop every service in the product so time waste
+
+--use of api gateways
+to connect to microservices
+using of api gateways you have to remember only one port no
+if I have 10 services running on different ports, api gateway makes it easy by automatically connect to different services
+api gateway - 9000
+service1 - 8080
+service2 - 8081
+request sent to api gateway on port 9000
+individual service built on diff platforms
+
+disadvntg - complex, management overhead, infra cost high, not feasible for small organization
+
+
+STS
+eureka server - it enables microservers to dynamically register themselves and locate other services without relying static, hardcoded addresses. 
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+package com.loan.repository;
+
+@Repository
+public interface RepaymentScheduleRepository extends JpaRepository<RepaymentSchedule, Long> {
+    List<RepaymentSchedule> findByLoanId(Long loanId);
+}

@@ -1,0 +1,63 @@
+package com.loan.controller;
+
+import com.loan.model.RepaymentSchedule;
+import com.loan.repository.RepaymentScheduleRepository;
+import com.loan.service.RepaymentScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/loan/schedule")
+@CrossOrigin(origins = "http://localhost:3000")
+public class RepaymentScheduleController {
+
+    @Autowired
+    private RepaymentScheduleService repaymentScheduleService;
+
+    @Autowired
+    private RepaymentScheduleRepository repaymentScheduleRepository;
+
+    // 1. Save custom schedule
+    @PostMapping("/generate/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> createSchedule(
+            @PathVariable Long loanId,
+            @RequestBody List<RepaymentSchedule> schedules) {
+        List<RepaymentSchedule> saved = repaymentScheduleService.createSchedule(loanId, schedules);
+        return ResponseEntity.ok(saved);
+    }
+
+    // 2. Fetch schedule by loan ID
+    @GetMapping("/{loanId}")
+    public ResponseEntity<List<RepaymentSchedule>> getSchedule(@PathVariable Long loanId) {
+        List<RepaymentSchedule> list = repaymentScheduleService.fetchScheduleByLoanId(loanId);
+        return ResponseEntity.ok(list);
+    }
+
+    // 3. Auto-generate and optionally save schedule
+    @PostMapping("/auto-generate")
+    public ResponseEntity<List<RepaymentSchedule>> autoGenerateSchedule(
+            @RequestParam Long loanId,
+            @RequestParam double totalAmount,
+            @RequestParam int tenure,
+            @RequestParam String source
+    ) {
+        List<RepaymentSchedule> schedules =
+                repaymentScheduleService.generateAndOptionallySaveSchedule(loanId, totalAmount, tenure, source);
+        return ResponseEntity.ok(schedules);
+    }
+
+    // 4. Save schedule (used by Admin Panel)
+    @PostMapping("/loan/{loanId}/repayment-schedule")
+    public ResponseEntity<String> saveSchedule(
+            @PathVariable Long loanId,
+            @RequestBody List<RepaymentSchedule> scheduleList) {
+        for (RepaymentSchedule schedule : scheduleList) {
+            schedule.setLoanId(loanId);
+            repaymentScheduleRepository.save(schedule);
+        }
+        return ResponseEntity.ok("Repayment schedule saved successfully");
+    }
+}

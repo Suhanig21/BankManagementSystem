@@ -1,0 +1,14 @@
+spring.application.name=loan-management-system
+
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=hr
+spring.datasource.password=hr
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+# Hibernate settings (JPA)
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.show-sql=True
+spring.jpa.hibernate.ddl-auto=update
+
+logging.level.org.springframework.security=DEBUG
+file.upload-dir=uploads/

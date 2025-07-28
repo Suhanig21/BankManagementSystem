@@ -1,0 +1,20 @@
+package com.loan.service;
+
+import com.loan.model.InterestRequest;
+import com.loan.model.InterestResponse;
+import org.springframework.stereotype.Service;
+
+@Service
+public class InterestService {
+
+    public InterestResponse calculateInterest(InterestRequest request) {
+        double principal = request.getPrincipal();
+        double rate = request.getRate();
+        double time = request.getTime();
+
+        double interest = (principal * rate * time) / 100;
+        double totalAmount = principal + interest;
+
+        return new InterestResponse(interest, totalAmount);
+    }
+}

@@ -1,0 +1,20 @@
+package com.loan.model;
+
+@Entity
+@Table(name = "repayment_schedule")
+public class RepaymentSchedule {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long loanId;
+
+    private Double installmentAmount;
+
+    private LocalDate dueDate;
+
+    private String status = "PENDING"; // or PAID
+
+    // Getters and Setters
+}

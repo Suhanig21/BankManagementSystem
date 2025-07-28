@@ -1,0 +1,5 @@
+package com.loan.security;
+
+public class PasswordEncoderConfig {
+
+}

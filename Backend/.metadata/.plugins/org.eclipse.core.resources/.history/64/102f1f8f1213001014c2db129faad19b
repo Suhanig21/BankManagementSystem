@@ -1,0 +1,69 @@
+package com.loan.service;
+
+import com.loan.model.RepaymentSchedule;
+import com.loan.repository.RepaymentScheduleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class RepaymentScheduleService {
+
+    @Autowired
+    private RepaymentScheduleRepository scheduleRepository;
+
+    // Custom schedule from user input (already implemented)
+    public List<RepaymentSchedule> createSchedule(Long loanId, List<RepaymentSchedule> schedules) {
+        for (RepaymentSchedule schedule : schedules) {
+            schedule.setLoanId(loanId);
+            schedule.setStatus("PENDING");
+        }
+        return scheduleRepository.saveAll(schedules);
+    }
+
+    // Fetch from DB
+    public List<RepaymentSchedule> fetchScheduleByLoanId(Long loanId) {
+        return scheduleRepository.findByLoanId(loanId);
+    }
+
+    // NEW: Generate equal installment schedule
+    public List<RepaymentSchedule> generateAndOptionallySaveSchedule(Long loanId, double totalAmount, int tenure, String source) {
+        List<RepaymentSchedule> schedules = new ArrayList<>();
+        double installment = totalAmount / tenure;
+
+        for (int i = 1; i <= tenure; i++) {
+            RepaymentSchedule schedule = new RepaymentSchedule();
+            schedule.setLoanId(loanId);
+            schedule.setInstallmentAmount(installment);
+            schedule.setDueDate(LocalDate.now().plusMonths(i));
+            schedule.setStatus("PENDING");
+            schedule.setSource(source);
+
+            if ("admin".equalsIgnoreCase(source)) {
+                scheduleRepository.save(schedule); // Save only if admin
+            }
+
+            schedules.add(schedule);
+        }
+
+        return schedules;
+    }
+    
+    public boolean processPayment(Long loanId, int installmentNumber, double amountPaid, String paymentDateStr) {
+        List<RepaymentSchedule> schedules = repaymentScheduleRepository.findByLoanId(loanId);
+
+        for (RepaymentSchedule schedule : schedules) {
+            if (schedule.getInstallmentNumber() == installmentNumber) {
+                schedule.setStatus("Paid");
+                schedule.setPaymentDate(LocalDate.parse(paymentDateStr));
+                repaymentScheduleRepository.save(schedule);
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
