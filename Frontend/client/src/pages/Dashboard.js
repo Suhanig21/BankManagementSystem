@@ -29,6 +29,15 @@ const Dashboard = () => {
                 <Link to="/interest-calculator" className="btn btn-outline-primary">
                   <i className="bi bi-calculator me-2"></i>Interest Calculator
                 </Link>
+                <Link to="/deposit" className="btn btn-outline-primary">
+                  <i className="bi bi-cash me-2"></i>Deposit Money
+                </Link>
+                <Link to="/withdraw" className="btn btn-outline-primary">
+                  <i className="bi bi-cash me-2"></i>Withdraw Money
+                </Link>
+                <Link to="/transfer" className="btn btn-outline-primary">
+                  <i className="bi bi-cash me-2"></i>Transfer Money
+                </Link>
               </div>
             </div>
             <div className="card-footer bg-light py-3 text-center text-muted">
