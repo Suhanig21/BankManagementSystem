@@ -38,6 +38,9 @@ const Dashboard = () => {
                 <Link to="/transfer" className="btn btn-outline-primary">
                   <i className="bi bi-cash me-2"></i>Transfer Money
                 </Link>
+                 <Link to="/transreport" className="btn btn-outline-primary">
+                  <i className="bi bi-cash me-2"></i>Transaction Report
+                </Link>
               </div>
             </div>
             <div className="card-footer bg-light py-3 text-center text-muted">

@@ -15,7 +15,15 @@ const AdminLogin = () => {
     if (username === 'admin' && password === 'admin') {
       localStorage.setItem('isAdmin', 'true');
       navigate('/admin');
-    } else {
+    } 
+    else if (username === 'clerk' && password === 'clerk') {
+      localStorage.setItem('isClerk', 'true');
+      navigate('/clerk');
+    }
+    else if (username === 'branchmanager' && password === 'branchmanager') {
+      localStorage.setItem('isBranchmanager', 'true');
+      navigate('/branchmanager');
+    }else {
       setError('Invalid credentials');
     }
   };

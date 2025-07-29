@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const DepositMoney = () => {
+const TransferMoney = () => {
   const [form, setForm] = useState({
-    accountNumber: '',
+    recipientAccountNumber: '',
     amount: '',
+    pinNumber: '',
     description: '',
   });
 
@@ -20,21 +21,19 @@ const DepositMoney = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-
-    
-
     try {
       // Replace with your actual backend endpoint
-      await axios.post('http://localhost:8080/deposit', form);
-      setMessage('✅ Money deposited successfully!');
+      await axios.post('http://localhost:8080/transfer', form);
+      setMessage('✅ Money transferred successfully!');
       setForm({
-        accountNumber: '',
+        recipientAccountNumber: '',
         amount: '',
+        pinNumber: '',
         description: '',
       });
     } catch (err) {
       console.error(err);
-      setMessage('❌ Error depositing money.');
+      setMessage('❌ Error transferring money.');
     } finally {
       setIsSubmitting(false);
     }
@@ -45,9 +44,9 @@ const DepositMoney = () => {
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
           <div className="card shadow-lg border-0">
-            <div className="card-header bg-primary text-white py-3">
+            <div className="card-header bg-success text-white py-3">
               <h2 className="text-center mb-0 fw-bold">
-                <i className="bi bi-cash me-2"></i>Deposit Money
+                <i className="bi bi-arrow-left-right me-2"></i>Transfer Money
               </h2>
             </div>
 
@@ -62,15 +61,15 @@ const DepositMoney = () => {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    <i className="bi bi-credit-card-2-front me-1"></i> Account Number
+                    <i className="bi bi-credit-card-2-front me-1"></i> Enter Account Number of Recipient
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    name="accountNumber"
-                    value={form.accountNumber}
+                    name="recipientAccountNumber"
+                    value={form.recipientAccountNumber}
                     onChange={handleChange}
-                    placeholder="Enter account number"
+                    placeholder="Enter recipient's account number"
                     required
                   />
                 </div>
@@ -87,10 +86,29 @@ const DepositMoney = () => {
                       name="amount"
                       value={form.amount}
                       onChange={handleChange}
-                      placeholder="Enter amount"
+                      placeholder="Enter amount to transfer"
+                      min="1"
                       required
                     />
                   </div>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    <i className="bi bi-lock me-1"></i> PIN
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="pinNumber"
+                    value={form.pinNumber}
+                    onChange={handleChange}
+                    placeholder="Enter your PIN"
+                    maxLength="4"
+                    minLength="4"
+                    pattern="[0-9]{4}"
+                    required
+                  />
                 </div>
 
                 <div className="mb-3">
@@ -103,14 +121,14 @@ const DepositMoney = () => {
                     name="description"
                     value={form.description}
                     onChange={handleChange}
-                    placeholder="Description (optional)"
+                    placeholder="Enter description (optional)"
                   />
                 </div>
-
+                
                 <div className="d-grid gap-2">
                   <button
                     type="submit"
-                    className="btn btn-primary py-2 fw-semibold"
+                    className="btn btn-success py-2 fw-semibold"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -120,7 +138,7 @@ const DepositMoney = () => {
                       </>
                     ) : (
                       <>
-                        <i className="bi bi-send me-2"></i>Deposit
+                        <i className="bi bi-arrow-left-right me-2"></i>Transfer Money
                       </>
                     )}
                   </button>
@@ -134,4 +152,4 @@ const DepositMoney = () => {
   );
 };
 
-export default DepositMoney;
+export default TransferMoney;

@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="container">
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <i className="bi bi-currency-exchange fs-4 me-2"></i>
-          <span className="fw-bold">Loan Management System</span>
+          <span className="fw-bold">ABC Bank</span>
         </Link>
         
         <button 

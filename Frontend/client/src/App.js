@@ -9,15 +9,20 @@ import LoanList from './components/LoanList';
 import LoanDetails from './components/LoanDetails';
 import LoanApplication from './components/LoanApplication';
 import AdminPanel from './pages/AdminPanel';
+import ClerkPanel from './pages/ClerkPanel';
 import AdminLogin from './pages/AdminLogin';
 import InterestCalculator from './components/InterestCalculator';
+import ClerkDetail from './pages/ClerkDetail';
 import PaymentProcessing from './components/PaymentProcessing';
 import ProtectedUserRoute from './components/ProtectedUserRoute'; // ✅ import
 import DepositMoney from './components/Deposit'; // Import DepositMoney component
-
+import Withdraw from './components/Withdraw'; // ✅ Import Withdraw component
+import Transfer from './components/Transfer'; // Import Transfer component
+import TransactionReport from './components/TransactionReport';
 
 const App = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
+  const isClerk = localStorage.getItem('isClerk') === 'true';
 
   return (
     <Router>
@@ -32,6 +37,11 @@ const App = () => {
         <Route path="/loan-details" element={<LoanDetails />} />
         <Route path="/interest-calculator" element={<InterestCalculator />} />
         <Route path="/deposit" element={<DepositMoney />} />
+        <Route path="/withdraw" element={<Withdraw />} /> {/* ✅ Withdraw component */}
+        <Route path="/transfer" element={<Transfer />} />
+        <Route path="/transreport" element={<TransactionReport />} />
+        <Route path="/details" element={<ClerkDetail />} />
+
 
         {/* ✅ Protected payment route */}
         <Route
@@ -43,9 +53,13 @@ const App = () => {
           }
         />
 
-        {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
-        {/* <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/admin-login" />} /> */}
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/admin-login" />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/clerk" element={isClerk ? <ClerkPanel /> : <Navigate to="/admin-login" />} />
+        <Route path="/clerk" element={<ClerkPanel />} />
+
+        {/* <Route path="/clerk" element={<ClerkLogin />} /> */}
 
       </Routes>
     </Router>

@@ -12,7 +12,7 @@ const Home = () => {
           <div className="card shadow border-0">
             <div className="card-header bg-primary text-white py-3">
               <h2 className="mb-0 fw-bold">
-                <i className="bi bi-bank me-2"></i>Loan Management System
+                <i className="bi bi-bank me-2"></i>ABC Bank
               </h2>
             </div>
             <div className="card-body p-4 text-center">
