@@ -14,7 +14,8 @@ import InterestCalculator from './components/InterestCalculator';
 import PaymentProcessing from './components/PaymentProcessing';
 import ProtectedUserRoute from './components/ProtectedUserRoute'; // ✅ import
 import DepositMoney from './components/Deposit'; // Import DepositMoney component
-
+import Withdraw from './components/Withdraw'; // ✅ Import Withdraw component
+import Transfer from './components/Transfer'; // Import Transfer component
 
 const App = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -32,6 +33,8 @@ const App = () => {
         <Route path="/loan-details" element={<LoanDetails />} />
         <Route path="/interest-calculator" element={<InterestCalculator />} />
         <Route path="/deposit" element={<DepositMoney />} />
+        <Route path="/withdraw" element={<Withdraw />} /> {/* ✅ Withdraw component */}
+        <Route path="/transfer" element={<Transfer />} />
 
         {/* ✅ Protected payment route */}
         <Route

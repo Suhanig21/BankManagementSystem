@@ -1,40 +1,46 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-
 const Register = () => {
   const [user, setUser] = useState({
     username: '',
     password: '',
     income: '',
-    amount: ''
+    role: '',
+    customerType: '',
+    govtId: '',
+    phoneNo: '',
+    address: '',
   });
-
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
-
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage({ text: '', type: '' });
-
     try {
       const res = await axios.post('http://localhost:8080/auth/register', {
         ...user,
         income: parseFloat(user.income),
-        amount: parseFloat(user.amount)
+        amount: parseFloat(user.amount),
+        phoneNo: parseInt(user.phoneNo)
       });
-
       setMessage({
         text: 'User registered successfully! Please login to continue.',
         type: 'success'
       });
-
-      setUser({ username: '', password: '', income: '', amount: '' });
+      setUser({
+        username: '',
+        password: '',
+        income: '',
+        role: '',
+        customerType: '',
+        govtId: '',
+        phoneNo: '',
+        address: ''
+      });
     } catch (err) {
       setMessage({
         text: err.response?.data || 'Registration failed. Please try again.',
@@ -45,7 +51,6 @@ const Register = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="container my-5">
       <div className="row justify-content-center">
@@ -63,86 +68,119 @@ const Register = () => {
                   {message.text}
                 </div>
               )}
-
               <form onSubmit={handleSubmit}>
                 {/* Username */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">
-                    <i className="bi bi-person me-1"></i> Username
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text">
-                      <i className="bi bi-person-fill"></i>
-                    </span>
-                    <input
-                      type="text"
-                      name="username"
-                      className="form-control"
-                      value={user.username}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
+                  <label className="form-label fw-semibold">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    className="form-control"
+                    value={user.username}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
-
                 {/* Password */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">
-                    <i className="bi bi-key me-1"></i> Password
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text">
-                      <i className="bi bi-lock-fill"></i>
-                    </span>
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      value={user.password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
+                  <label className="form-label fw-semibold">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    value={user.password}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
-
                 {/* Income */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">
-                    <i className="bi bi-cash-stack me-1"></i> Income (Monthly)
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text">₹</span>
-                    <input
-                      type="number"
-                      name="income"
-                      className="form-control"
-                      value={user.income}
-                      onChange={handleChange}
-                      required
-                      min="0"
-                    />
-                  </div>
+                  <label className="form-label fw-semibold">Income (Monthly)</label>
+                  <input
+                    type="number"
+                    name="income"
+                    className="form-control"
+                    value={user.income}
+                    onChange={handleChange}
+                    required
+                    min="0"
+                  />
                 </div>
-
+                {/* Role */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Role</label>
+                  <input
+                    type="text"
+                    name="role"
+                    className="form-control"
+                    value={user.role}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {/* Customer Type */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Customer Type</label>
+                  <input
+                    type="text"
+                    name="customerType"
+                    className="form-control"
+                    value={user.customerType}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {/* Govt ID */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Government ID</label>
+                  <input
+                    type="text"
+                    name="govtId"
+                    className="form-control"
+                    value={user.govtId}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {/* Phone Number */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phoneNo"
+                    className="form-control"
+                    value={user.phoneNo}
+                    onChange={handleChange}
+                    required
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                  />
+                </div>
+                {/* Address */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Address</label>
+                  <textarea
+                    name="address"
+                    className="form-control"
+                    value={user.address}
+                    onChange={handleChange}
+                    required
+                    rows="2"
+                  ></textarea>
+                </div>
                 {/* Amount */}
-                <div className="mb-4">
-                  <label className="form-label fw-semibold">
-                    <i className="bi bi-wallet2 me-1"></i> Loan Amount Required
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text">₹</span>
-                    <input
-                      type="number"
-                      name="amount"
-                      className="form-control"
-                      value={user.amount}
-                      onChange={handleChange}
-                      required
-                      min="0"
-                    />
-                  </div>
-                </div>
-
+                {/* <div className="mb-4">
+                  <label className="form-label fw-semibold">Loan Amount Required</label>
+                  <input
+                    type="number"
+                    name="amount"
+                    className="form-control"
+                    value={user.amount}
+                    onChange={handleChange}
+                    required
+                    min="0"
+                  />
+                </div> */}
                 <button
                   type="submit"
                   className="btn btn-primary py-2 fw-semibold w-100"
@@ -171,5 +209,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;
