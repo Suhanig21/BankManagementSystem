@@ -1,3 +1,4 @@
+
 package com.loan.service;
 
 import com.loan.model.User;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+    public User save(User user) {
+        return userRepo.save(user);
+    }
 
     private final PasswordEncoder passwordEncoder;
 
@@ -27,5 +31,9 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    public User getUserById(Long id) {
+        return userRepo.findById(id).orElse(null);
     }
 }

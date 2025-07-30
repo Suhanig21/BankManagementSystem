@@ -3,6 +3,26 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+import Dropdown from 'react-bootstrap/Dropdown';
+
+// Custom toggle for Dropdown to remove the arrow
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => {
+  return (
+    <button
+      type="button"
+      className="btn nav-link px-2 d-flex align-items-center"
+      style={{ background: 'none', border: 'none', color: 'white' }}
+      ref={ref}
+      onClick={e => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+    </button>
+  );
+});
+
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,13 +83,20 @@ const Navbar = () => {
             </li>
             
             <li className="nav-item ms-2">
-              <button
-                className="btn btn-light text-primary px-3 py-1 d-flex align-items-center"
-                onClick={handleLogout}
-                style={{ borderRadius: '20px', fontWeight: '500' }}
-              >
-                <i className="bi bi-box-arrow-right me-2"></i> Logout
-              </button>
+              <Dropdown align="end">
+                <Dropdown.Toggle as={CustomToggle} id="profileDropdown">
+                  <i className="bi bi-person-circle fs-4 text-white"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/profile">
+                    <i className="bi bi-person me-2"></i> Profile
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={handleLogout} className="d-flex align-items-center">
+                    <i className="bi bi-box-arrow-right me-2"></i> Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </li>
           </ul>
         </div>

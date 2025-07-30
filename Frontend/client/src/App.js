@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import LoanList from './components/LoanList';
 import LoanDetails from './components/LoanDetails';
 import LoanApplication from './components/LoanApplication';
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/deposit" element={<DepositMoney />} />
         <Route path="/withdraw" element={<Withdraw />} /> {/* ✅ Withdraw component */}
         <Route path="/transfer" element={<Transfer />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* ✅ Protected payment route */}
         <Route
@@ -46,8 +48,8 @@ const App = () => {
           }
         />
 
-        {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
-        {/* <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/admin-login" />} /> */}
+        {<Route path="/admin-login" element={<AdminLogin />} />}
+        {<Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/admin-login" />} />}
         <Route path="/admin" element={<AdminPanel />} />
 
       </Routes>

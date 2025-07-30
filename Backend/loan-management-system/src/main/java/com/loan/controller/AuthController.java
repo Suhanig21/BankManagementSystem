@@ -58,5 +58,28 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    // Get user profile by ID
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<?> getProfile(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        return ResponseEntity.ok(user);
+    }
 
+    // Update user profile by ID
+    @PutMapping("/profile/{id}")
+    public ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        user.setUsername(updatedUser.getUsername());
+        user.setRole(updatedUser.getRole());
+        user.setIncome(updatedUser.getIncome());
+        // Add more fields as needed
+        userService.save(user);
+        return ResponseEntity.ok(user);
+    }
 }
