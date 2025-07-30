@@ -82,22 +82,24 @@ const Navbar = () => {
               </Link>
             </li>
             
-            <li className="nav-item ms-2">
-              <Dropdown align="end">
-                <Dropdown.Toggle as={CustomToggle} id="profileDropdown">
-                  <i className="bi bi-person-circle fs-4 text-white"></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/profile">
-                    <i className="bi bi-person me-2"></i> Profile
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout} className="d-flex align-items-center">
-                    <i className="bi bi-box-arrow-right me-2"></i> Logout
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </li>
+            {localStorage.getItem('isUserLoggedIn') === 'true' && (
+              <li className="nav-item ms-2">
+                <Dropdown align="end">
+                  <Dropdown.Toggle as={CustomToggle} id="profileDropdown">
+                    <i className="bi bi-person-circle fs-4 text-white"></i>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={Link} to="/profile">
+                      <i className="bi bi-person me-2"></i> Profile
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout} className="d-flex align-items-center">
+                      <i className="bi bi-box-arrow-right me-2"></i> Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
+            )}
           </ul>
         </div>
       </div>
