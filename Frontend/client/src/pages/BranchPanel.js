@@ -1,10 +1,8 @@
-// src/pages/Dashboard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-const Dashboard = () => {
+const BranchPanel = () => {
   return (
     <div className="container my-5">
       <div className="row justify-content-center">
@@ -12,22 +10,25 @@ const Dashboard = () => {
           <div className="card shadow border-0">
             <div className="card-header bg-primary text-white py-3">
               <h2 className="mb-0 fw-bold">
-                <i className="bi bi-speedometer2 me-2"></i>Clerk Dashboard
+                <i className="bi bi-speedometer2 me-2"></i>Branch Manager Dashboard
               </h2>
             </div>
             <div className="card-body p-4">
               <div className="d-grid gap-3">
-                <Link to="/register" className="btn btn-primary py-2 fw-semibold">
-                  <i className="bi bi-currency-exchange me-2"></i>Create Account
+                {/* <Link to="/customer-details" className="btn btn-primary py-2 fw-semibold">
+                  <i className="bi bi-currency-exchange me-2"></i>Customer Details
+                </Link> */}
+                <Link to="/loan-list" className="btn btn-outline-primary">
+                  <i className="bi bi-list-ul me-2"></i>View All Loans
                 </Link>
-                <Link to="/custregister" className="btn btn-outline-primary">
-                  <i className="bi bi-list-ul me-2"></i>Create Customer
+                <Link to="/loan-status" className="btn btn-outline-primary">
+                  <i className="bi bi-search me-2"></i>Get Defaulted Loan ID
                 </Link>
-                <Link to="/transreport" className="btn btn-outline-primary">
-                  <i className="bi bi-search me-2"></i>View Transaction Report 
+                <Link to="/approve-loan" className="btn btn-outline-primary">
+                  <i className="bi bi-calculator me-2"></i>Loan Requests
                 </Link>
-                <Link to="/details" className="btn btn-outline-primary">
-                  <i className="bi bi-calculator me-2"></i>Clerk Details
+                <Link to="/approve-account" className="btn btn-outline-primary">
+                  <i className="bi bi-list-ul me-2"></i>View All Accounts
                 </Link>
               </div>
             </div>
@@ -40,5 +41,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
+export default BranchPanel;

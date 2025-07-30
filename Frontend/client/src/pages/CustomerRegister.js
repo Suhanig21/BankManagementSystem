@@ -12,22 +12,13 @@ const Register = () => {
     phoneNo: '',
     address: '',
   });
-  const [account, setAccount] = useState({
-    accountID: '',
-    accountType: '',
-    pin: '',
-    balance: '',
-    startDate:'',
-    userId: ''
-  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
-const handleAccountChange = (e) => {
-  setAccount({ ...account, [e.target.name]: e.target.value });
-};
-
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,18 +26,12 @@ const handleAccountChange = (e) => {
     setMessage({ text: '', type: '' });
 
     try {
-      const res = await axios.post('http://localhost:8080/auth/register', {
-       user: {
+      const res = await axios.post('http://localhost:8080/auth/custregister', {
         ...user,
         income: parseFloat(user.income),
-        phoneNo: parseInt(user.phoneNo),
-      },
-      account: {
-        ...account,
-        balance: parseFloat(account.balance),
-        pin: parseInt(account.pin)
-      }
-    });
+        amount: parseFloat(user.amount),
+        phoneNo: parseInt(user.phoneNo)
+      });
 
       setMessage({
         text: 'User registered successfully! Please login to continue.',
@@ -63,16 +48,7 @@ const handleAccountChange = (e) => {
         phoneNo: '',
         address: '',
       });
-      setAccount({
-        accountID: '',
-        accountType: '',
-        balance: '',
-        pin: '',
-        startDate:'',
-        userId: ''
-      });
-    }
-     catch (err) {
+    } catch (err) {
       setMessage({
         text: err.response?.data || 'Registration failed. Please try again.',
         type: 'danger'
@@ -90,7 +66,7 @@ const handleAccountChange = (e) => {
           <div className="card shadow border-0">
             <div className="card-header bg-primary text-white py-3">
               <h2 className="mb-0 fw-bold">
-                <i className="bi bi-person-plus me-2"></i>Register your account
+                <i className="bi bi-person-plus me-2"></i>Register the New Customer
               </h2>
             </div>
             <div className="card-body p-4">
@@ -102,19 +78,8 @@ const handleAccountChange = (e) => {
               )}
 
               <form onSubmit={handleSubmit}>
-                 {/* User Id */}
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">User id</label>
-                  <input
-                    type="text"
-                    name="userId"
-                    className="form-control"
-                    value={account.userId}
-                    onChange={handleAccountChange}
-                    required
-                  />
-                </div>
-                {/* Username
+               
+                {/* Username */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Username</label>
                   <input
@@ -125,9 +90,9 @@ const handleAccountChange = (e) => {
                     onChange={handleChange}
                     required
                   />
-                </div> */}
+                </div>
 
-                {/* Password
+                {/* Password */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Password</label>
                   <input
@@ -138,9 +103,9 @@ const handleAccountChange = (e) => {
                     onChange={handleChange}
                     required
                   />
-                </div> */}
+                </div>
 
-                {/* Income
+                {/* Income */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Income (Monthly)</label>
                   <input
@@ -152,9 +117,9 @@ const handleAccountChange = (e) => {
                     required
                     min="0"
                   />
-                </div> */}
+                </div>
 
-                {/* Role
+                {/* Role */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Role</label>
                   <input
@@ -165,9 +130,9 @@ const handleAccountChange = (e) => {
                     onChange={handleChange}
                     required
                   />
-                </div> */}
+                </div>
 
-                {/* Customer Type
+                {/* Customer Type */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Customer Type</label>
                   <input
@@ -178,9 +143,9 @@ const handleAccountChange = (e) => {
                     onChange={handleChange}
                     required
                   />
-                </div> */}
+                </div>
 
-                {/* Govt ID
+                {/* Govt ID */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Government ID</label>
                   <input
@@ -191,9 +156,9 @@ const handleAccountChange = (e) => {
                     onChange={handleChange}
                     required
                   />
-                </div> */}
+                </div>
 
-                {/* Phone Number
+                {/* Phone Number */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Phone Number</label>
                   <input
@@ -206,9 +171,9 @@ const handleAccountChange = (e) => {
                     pattern="[0-9]{10}"
                     maxLength={10}
                   />
-                </div> */}
+                </div>
 
-                {/* Address
+                {/* Address */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Address</label>
                   <textarea
@@ -219,59 +184,9 @@ const handleAccountChange = (e) => {
                     required
                     rows="2"
                   ></textarea>
-                </div> */}
-                  
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Account Type</label>
-                  <input
-                    type="text"
-                    name="accountType"
-                    className="form-control"
-                    value={account.accountType}
-                    onChange={handleAccountChange}
-                    required
-                  />
-                </div>
-                  
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Balance</label>
-                  <input
-                    type="text"
-                    name="balance"
-                    className="form-control"
-                    value={account.balance}
-                    onChange={handleAccountChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Pin</label>
-                  <input
-                    type="text"
-                    name="pin"
-                    className="form-control"
-                    value={account.pin}
-                    onChange={handleAccountChange}
-                    required
-                  />
-                </div>
-                  
-               <div className="mb-3">
-                  <label className="form-label fw-semibold">Start Date</label>
-                  <input
-                    type="text"
-                    name="startDate"
-                    className="form-control"
-                    value={account.startDate}
-                    onChange={handleAccountChange}
-                    required
-                  />
                 </div>
 
-
-
-
-             
+              
 
                 <button
                   type="submit"

@@ -19,9 +19,17 @@ import DepositMoney from './components/Deposit'; // Import DepositMoney componen
 import Withdraw from './components/Withdraw'; // ✅ Import Withdraw component
 import Transfer from './components/Transfer'; // Import Transfer component
 import TransactionReport from './components/TransactionReport';
+import CustomerRegister from './pages/CustomerRegister'
+import BranchPanel from './pages/BranchPanel';
+import CustomerDetails from './pages/CustomerDetails';
+import LoanStatus from './pages/LoanStatus';
+import ApproveLoan from './pages/ApproveLoan';
+import AccountDetails from './pages/AccountDetails';
+
 
 const App = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
+  const isBranchmanager = localStorage.getItem('isBranchmanager') === 'true';
   const isClerk = localStorage.getItem('isClerk') === 'true';
 
   return (
@@ -31,6 +39,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/custregister" element={<CustomerRegister />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/apply-loan" element={<LoanApplication />} />
         <Route path="/loan-list" element={<LoanList />} />
@@ -58,6 +67,15 @@ const App = () => {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/clerk" element={isClerk ? <ClerkPanel /> : <Navigate to="/admin-login" />} />
         <Route path="/clerk" element={<ClerkPanel />} />
+
+        {/* branch */}
+        <Route path="/customer-details" element={<CustomerDetails />} />
+        <Route path="/loan-status" element={<LoanStatus/>} />
+        <Route path="/approve-loan" element={<ApproveLoan />} />
+        <Route path="/approve-account" element={<AccountDetails/>} />
+
+        <Route path="/branchmanager" element={isBranchmanager ? <BranchPanel /> : <Navigate to="/admin-login" />} />
+        <Route path="/branchmanager" element={<BranchPanel />} />
 
         {/* <Route path="/clerk" element={<ClerkLogin />} /> */}
 
