@@ -24,6 +24,7 @@ public class User {
     private String govtId;
     private Long phoneNo;
     private String address;
+    
 	public Long getId() {
 		return id;
 	}

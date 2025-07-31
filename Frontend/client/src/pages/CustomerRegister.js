@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Register = () => {
+const CustomerRegister = () => {
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -217,4 +217,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CustomerRegister;

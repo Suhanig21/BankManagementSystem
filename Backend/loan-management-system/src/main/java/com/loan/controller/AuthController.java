@@ -25,6 +25,7 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+    @Autowired
     private AccountService accountService;
     private AccountRepository accountRepository;
     private UserRepository userRepository;
@@ -32,23 +33,29 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/register")
-public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-    User user = registerRequest.getUser();
-    Account account = registerRequest.getAccount();
+    // @PostMapping("/register")
+    // public ResponseEntity<?> registerAccount(@RequestBody Account account) {
+    //     accountService.registerAccount(account);
+    //     return ResponseEntity.ok("Account registered successfully");
+    // }
+    // @PostMapping("/register")
+    // public ResponseEntity<?> registerAccount(@RequestBody Account account) {
+    //     try {
+    //         accountService.registerAccount(account);
+    //         return ResponseEntity.ok("Account registered successfully");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                             .body("Account registration failed: " + e.getMessage());
+    //     }
+    // }
 
-    // Save user first
-    User savedUser = userRepository.save(user);
 
-    // Link the user to account
-    account.setUser(savedUser);
 
-    // Save account
-    accountRepository.save(account);
-
-    return ResponseEntity.ok("User and Account registered successfully!");
-}
-
+    // @PostMapping("/auth/register")
+    // public Account register(@RequestBody Account account) {
+    //     return accountService.registerAccount(account);
+    // }
 
     @PostMapping("/custregister")
     public User custRegister(@RequestBody User user) {

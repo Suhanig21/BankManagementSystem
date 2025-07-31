@@ -17,7 +17,7 @@ const Dashboard = () => {
             </div>
             <div className="card-body p-4">
               <div className="d-grid gap-3">
-                <Link to="/register" className="btn btn-primary py-2 fw-semibold">
+                <Link to="/account/register" className="btn btn-primary py-2 fw-semibold">
                   <i className="bi bi-currency-exchange me-2"></i>Create Account
                 </Link>
                 <Link to="/custregister" className="btn btn-outline-primary">

@@ -1,81 +1,64 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
-  const [user, setUser] = useState({
-    username: '',
-    password: '',
-    income: '',
-    role: '',
-    customerType: '',
-    govtId: '',
-    phoneNo: '',
-    address: '',
-  });
   const [account, setAccount] = useState({
-    accountID: '',
-    accountType: '',
-    pin: '',
-    balance: '',
-    startDate:'',
-    userId: ''
+    accountType: "",
+    pin: "",
+    balance: "",
+    startDate: "",
+    userId: ""
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState({ text: '', type: '' });
+  const [message, setMessage] = useState({ text: "", type: "" });
 
-const handleAccountChange = (e) => {
-  setAccount({ ...account, [e.target.name]: e.target.value });
-};
-
+  const handleChange = (e) => {
+    setAccount({ ...account, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setMessage({ text: '', type: '' });
+    setMessage({ text: "", type: "" });
 
     try {
-      const res = await axios.post('http://localhost:8080/auth/register', {
-       user: {
-        ...user,
-        income: parseFloat(user.income),
-        phoneNo: parseInt(user.phoneNo),
-      },
-      account: {
-        ...account,
+      const payload = {
+        accountType: account.accountType,
+        pin: parseInt(account.pin),
         balance: parseFloat(account.balance),
-        pin: parseInt(account.pin)
-      }
-    });
+        startDate: account.startDate,
+        user: {
+          id: parseInt(account.userId)
+        }
+      };
+
+      // const res = await axios.post("http://localhost:8080/account/register", payload);
+      axios.post('http://localhost:8080/account/register', payload, {
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  withCredentials: true  // Important if your backend uses session/cookies
+})
+.then(res => console.log(res))
+.catch(err => console.error("here is the error" , err));
 
       setMessage({
-        text: 'User registered successfully! Please login to continue.',
-        type: 'success'
+        text: "Account created successfully!",
+        type: "success"
       });
 
-      setUser({
-        username: '',
-        password: '',
-        income: '',
-        role: '',
-        customerType: '',
-        govtId: '',
-        phoneNo: '',
-        address: '',
-      });
       setAccount({
-        accountID: '',
-        accountType: '',
-        balance: '',
-        pin: '',
-        startDate:'',
-        userId: ''
+        accountType: "",
+        pin: "",
+        balance: "",
+        startDate: "",
+        userId: ""
       });
-    }
-     catch (err) {
+    } catch (err) {
       setMessage({
-        text: err.response?.data || 'Registration failed. Please try again.',
-        type: 'danger'
+        text: err.response?.data || "Account creation failed. Please try again.",
+        type: "danger"
       });
       console.error(err);
     } finally {
@@ -90,137 +73,29 @@ const handleAccountChange = (e) => {
           <div className="card shadow border-0">
             <div className="card-header bg-primary text-white py-3">
               <h2 className="mb-0 fw-bold">
-                <i className="bi bi-person-plus me-2"></i>Register your account
+                <i className="bi bi-person-plus me-2"></i>Register into your Account
               </h2>
             </div>
             <div className="card-body p-4">
               {message.text && (
                 <div className={`alert alert-${message.type} d-flex align-items-center`}>
-                  <i className={`bi ${message.type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'} me-2`}></i>
+                  <i className={`bi ${message.type === "success" ? "bi-check-circle" : "bi-exclamation-triangle"} me-2`}></i>
                   {message.text}
                 </div>
               )}
 
               <form onSubmit={handleSubmit}>
-                 {/* User Id */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">User id</label>
+                  <label className="form-label fw-semibold">User Id</label>
                   <input
                     type="text"
                     name="userId"
                     className="form-control"
                     value={account.userId}
-                    onChange={handleAccountChange}
+                    onChange={handleChange}
                     required
                   />
                 </div>
-                {/* Username
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Username</label>
-                  <input
-                    type="text"
-                    name="username"
-                    className="form-control"
-                    value={user.username}
-                    onChange={handleChange}
-                    required
-                  />
-                </div> */}
-
-                {/* Password
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    value={user.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </div> */}
-
-                {/* Income
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Income (Monthly)</label>
-                  <input
-                    type="number"
-                    name="income"
-                    className="form-control"
-                    value={user.income}
-                    onChange={handleChange}
-                    required
-                    min="0"
-                  />
-                </div> */}
-
-                {/* Role
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Role</label>
-                  <input
-                    type="text"
-                    name="role"
-                    className="form-control"
-                    value={user.role}
-                    onChange={handleChange}
-                    required
-                  />
-                </div> */}
-
-                {/* Customer Type
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Customer Type</label>
-                  <input
-                    type="text"
-                    name="customerType"
-                    className="form-control"
-                    value={user.customerType}
-                    onChange={handleChange}
-                    required
-                  />
-                </div> */}
-
-                {/* Govt ID
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Government ID</label>
-                  <input
-                    type="text"
-                    name="govtId"
-                    className="form-control"
-                    value={user.govtId}
-                    onChange={handleChange}
-                    required
-                  />
-                </div> */}
-
-                {/* Phone Number
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="phoneNo"
-                    className="form-control"
-                    value={user.phoneNo}
-                    onChange={handleChange}
-                    required
-                    pattern="[0-9]{10}"
-                    maxLength={10}
-                  />
-                </div> */}
-
-                {/* Address
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Address</label>
-                  <textarea
-                    name="address"
-                    className="form-control"
-                    value={user.address}
-                    onChange={handleChange}
-                    required
-                    rows="2"
-                  ></textarea>
-                </div> */}
-                  
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Account Type</label>
                   <input
@@ -228,11 +103,10 @@ const handleAccountChange = (e) => {
                     name="accountType"
                     className="form-control"
                     value={account.accountType}
-                    onChange={handleAccountChange}
+                    onChange={handleChange}
                     required
                   />
                 </div>
-                  
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Balance</label>
                   <input
@@ -240,7 +114,7 @@ const handleAccountChange = (e) => {
                     name="balance"
                     className="form-control"
                     value={account.balance}
-                    onChange={handleAccountChange}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -251,28 +125,21 @@ const handleAccountChange = (e) => {
                     name="pin"
                     className="form-control"
                     value={account.pin}
-                    onChange={handleAccountChange}
+                    onChange={handleChange}
                     required
                   />
                 </div>
-                  
-               <div className="mb-3">
+                <div className="mb-3">
                   <label className="form-label fw-semibold">Start Date</label>
                   <input
                     type="text"
                     name="startDate"
                     className="form-control"
                     value={account.startDate}
-                    onChange={handleAccountChange}
+                    onChange={handleChange}
                     required
                   />
                 </div>
-
-
-
-
-             
-
                 <button
                   type="submit"
                   className="btn btn-primary py-2 fw-semibold w-100"
